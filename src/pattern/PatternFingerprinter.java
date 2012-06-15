@@ -304,7 +304,7 @@ public class PatternFingerprinter implements IPatternFingerprinter,
      */
     @Override
     public synchronized int compare(IPatternFingerprinter o1, IPatternFingerprinter o2) {
-        Comparator<IPatternFingerprinter> comparator = new IPatternComparators().overallComparator();
+        Comparator<IPatternFingerprinter> comparator = IPatternComparators.overallComparator();
         return comparator.compare(o1, o2);
     }
 

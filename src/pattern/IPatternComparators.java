@@ -33,7 +33,7 @@ import java.util.logging.Logger;
  */
 class IPatternComparators {
 
-    public Comparator<IPatternFingerprinter> overallComparator() {
+    public static Comparator<IPatternFingerprinter> overallComparator() {
         return new Comparator<IPatternFingerprinter>() {
 
             @Override
@@ -68,7 +68,7 @@ class IPatternComparators {
         };
     }
 
-    public Comparator<IPatternFingerprinter> dataComparator() {
+    public static Comparator<IPatternFingerprinter> dataComparator() {
         return new Comparator<IPatternFingerprinter>() {
 
             @Override
