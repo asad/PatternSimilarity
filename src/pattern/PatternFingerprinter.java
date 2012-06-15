@@ -21,14 +21,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-
 package pattern;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -299,8 +296,7 @@ public class PatternFingerprinter implements IPatternFingerprinter,
     }
 
     /**
-     * Returns 0 if two fingerprints are equal and if they share same labels it
-     * returns difference in their weight
+     * Returns 0 if two fingerprints are equal and if they share same labels it returns difference in their weight
      *
      * @param o1
      * @param o2
@@ -313,8 +309,7 @@ public class PatternFingerprinter implements IPatternFingerprinter,
     }
 
     /**
-     * Returns 0 if two fingerprints are equal and if they share same labels it
-     * returns difference in their weight
+     * Returns 0 if two fingerprints are equal and if they share same labels it returns difference in their weight
      *
      * @param t
      * @return
@@ -324,59 +319,44 @@ public class PatternFingerprinter implements IPatternFingerprinter,
         return compare(this, t);
     }
 
-    /**
-     * Return true if two Fingerprints are equal
-     *
-     * @param object
-     * @return
-     */
     @Override
-    public synchronized boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof IPatternFingerprinter)) {
+    public boolean equals(Object obj) {
+        if (obj == null) {
             return false;
         }
-        IPatternFingerprinter obj = (IPatternFingerprinter) object;
-
-        if (!this.fingerprintID.equals(obj.getFingerprintID())) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        int len1 = obj.getFeatureCount();
-        int len2 = this.getFeatureCount();
-        int n = Math.min(len1, len2);
-        if (len1 == len2) {
-            int pos = 0;
-            while (n-- != 0) {
-                try {
-                    if (!this.getFeature(pos).equals(obj.getFeature(pos))) {
-                        return false;
-                    } else if (this.getFeature(pos).equals(obj.getFeature(pos))) {
-                        double v1 = this.getWeight(pos).doubleValue();
-                        double v2 = obj.getWeight(pos).doubleValue();
-                        if (v1 != v2) {
-                            return false;
-                        }
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(PatternFingerprinter.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                pos++;
-            }
+        final PatternFingerprinter other = (PatternFingerprinter) obj;
+        if (this.featureSet != other.featureSet && (this.featureSet == null || !this.featureSet.equals(other.featureSet))) {
+            return false;
         }
-        return false;
+        if ((this.fingerprintID == null) ? (other.fingerprintID != null) : !this.fingerprintID.equals(other.fingerprintID)) {
+            return false;
+        }
+        if (this.fingerprintSize != other.fingerprintSize) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 31 * hash + (this.featureSet != null ? this.featureSet.hashCode() : 0);
-        hash = 31 * hash + (this.fingerprintID != null ? this.fingerprintID.hashCode() : 0);
-        hash = 31 * hash + this.fingerprintSize;
+        int hash = 7;
+        hash = 71 * hash + (this.featureSet != null ? this.featureSet.hashCode() : 0);
+        hash = 71 * hash + (this.fingerprintID != null ? this.fingerprintID.hashCode() : 0);
+        hash = 71 * hash + this.fingerprintSize;
         return hash;
     }
 
+//    @Override
+//    public int hashCode() {
+//        int hash = 5;
+//        hash = 31 * hash + (this.featureSet != null ? this.featureSet.hashCode() : 0);
+//        hash = 31 * hash + (this.fingerprintID != null ? this.fingerprintID.hashCode() : 0);
+//        hash = 31 * hash + this.fingerprintSize;
+//        return hash;
+//    }
     @Override
     public int getFingerprintSize() {
         return fingerprintSize;
