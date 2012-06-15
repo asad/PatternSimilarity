@@ -70,20 +70,41 @@ public final class Feature implements IFeature,
         if ((this.pattern == null) ? (other.pattern != null) : !this.pattern.equals(other.pattern)) {
             return false;
         }
-        if (Double.doubleToLongBits(this.weight) != Double.doubleToLongBits(other.weight)) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 79 * hash + (this.pattern != null ? this.pattern.hashCode() : 0);
-        hash = 79 * hash + (int) (Double.doubleToLongBits(this.weight) ^ (Double.doubleToLongBits(this.weight) >>> 32));
+        int hash = 5;
+        hash = 73 * hash + (this.pattern != null ? this.pattern.hashCode() : 0);
         return hash;
     }
 
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (obj == null) {
+//            return false;
+//        }
+//        if (getClass() != obj.getClass()) {
+//            return false;
+//        }
+//        final Feature other = (Feature) obj;
+//        if ((this.pattern == null) ? (other.pattern != null) : !this.pattern.equals(other.pattern)) {
+//            return false;
+//        }
+//        if (Double.doubleToLongBits(this.weight) != Double.doubleToLongBits(other.weight)) {
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int hash = 3;
+//        hash = 79 * hash + (this.pattern != null ? this.pattern.hashCode() : 0);
+//        hash = 79 * hash + (int) (Double.doubleToLongBits(this.weight) ^ (Double.doubleToLongBits(this.weight) >>> 32));
+//        return hash;
+//    }
     /**
      * Return weighted fingerprint
      *
