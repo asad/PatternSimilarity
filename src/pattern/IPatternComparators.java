@@ -32,11 +32,6 @@ import java.util.logging.Logger;
  * @author asad
  */
 class IPatternComparators {
-    private final PatternFingerprinter outer;
-
-    IPatternComparators(final PatternFingerprinter outer) {
-        this.outer = outer;
-    }
 
     public Comparator<IPatternFingerprinter> overallComparator() {
         return new Comparator<IPatternFingerprinter>() {
@@ -99,5 +94,4 @@ class IPatternComparators {
             }
         };
     }
-    
 }
