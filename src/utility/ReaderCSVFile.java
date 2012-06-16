@@ -60,8 +60,8 @@ public class ReaderCSVFile {
                 if (tokenize.length != 2) {
                     System.err.println("Error: in parsing line " + lineCounter + " in File " + file.getName());
                 }
-                String pattern = tokenize[0];
-                double weight = Double.parseDouble(tokenize[1]);
+                String pattern = tokenize[0].trim();
+                double weight = Double.parseDouble(tokenize[1].trim());
                 IFeature feature = new Feature(pattern, weight);
                 try {
                     q.add(feature);
