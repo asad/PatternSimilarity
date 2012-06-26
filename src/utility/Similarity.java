@@ -23,6 +23,7 @@
  */
 package utility;
 
+import java.util.BitSet;
 import pattern.IPatternFingerprinter;
 
 /**
@@ -35,10 +36,11 @@ public class Similarity {
      *
      * @param fp1
      * @param fp2
+     * @param weighted mode
      * @return reaction rawScore between two reaction based on the reactant product structure
      * @throws java.lang.Exception
      */
-    public static double getSimilarity(IPatternFingerprinter fp1, IPatternFingerprinter fp2) throws Exception {
+    public static double getSimilarity(IPatternFingerprinter fp1, IPatternFingerprinter fp2, boolean weighted) throws Exception {
         double score = 0.0;
         int size1 = fp1.getFingerprintSize();
         int size2 = fp2.getFingerprintSize();
@@ -47,10 +49,13 @@ public class Similarity {
         if (size1 != size2) {
             throw new Exception("Features vectors must be of the same length");
 
-        } else {
-
+        } else if (weighted) {
             double[] structFeatures1 = fp1.getWeightedHashedFingerPrint();
             double[] structFeatures2 = fp2.getWeightedHashedFingerPrint();
+            score = getSimilarity(structFeatures1, structFeatures2);
+        } else {
+            BitSet structFeatures1 = fp1.getHashedFingerPrint();
+            BitSet structFeatures2 = fp2.getHashedFingerPrint();
             score = getSimilarity(structFeatures1, structFeatures2);
         }
         return score;
@@ -58,32 +63,57 @@ public class Similarity {
 
     /**
      *
-     * @param bondFeatures1
-     * @param bondFeatures2
+     * @param rawFeatures1
+     * @param rawFeatures2
      * @return
      * @throws CDKException
      */
-    private static double getSimilarity(double[] bondFeatures1, double[] bondFeatures2) throws Exception {
+    private static double getSimilarity(double[] rawFeatures1, double[] rawFeatures2) throws Exception {
         double similarity = 0.0;
 
-        if (bondFeatures1.length != bondFeatures2.length) {
+        if (rawFeatures1.length != rawFeatures2.length) {
             throw new Exception("Features vectors must be of the same length");
         }
 
-        int n = bondFeatures1.length;
+        int n = rawFeatures1.length;
         double ab = 0.0;
         double a2 = 0.0;
         double b2 = 0.0;
 
         for (int i = 0; i < n; i++) {
-            ab += bondFeatures1[i] * bondFeatures2[i];
-            a2 += bondFeatures1[i] * bondFeatures1[i];
-            b2 += bondFeatures2[i] * bondFeatures2[i];
+            ab += rawFeatures1[i] * rawFeatures2[i];
+            a2 += rawFeatures1[i] * rawFeatures1[i];
+            b2 += rawFeatures2[i] * rawFeatures2[i];
         }
 
         if (a2 > 0.0 && b2 > 0.0) {
             similarity = ab / (a2 + b2 - ab);
         }
+        return similarity;
+    }
+
+    /**
+     *
+     * @param rawFeatures1
+     * @param rawFeatures2
+     * @return
+     * @throws CDKException
+     */
+    private static double getSimilarity(BitSet bitset1, BitSet bitset2) throws Exception {
+        double similarity;
+
+        if (bitset1.size() != bitset2.size()) {
+            throw new Exception("Features vectors must be of the same length");
+        }
+
+        float _bitset1_cardinality = bitset1.cardinality();
+        float _bitset2_cardinality = bitset2.cardinality();
+
+        BitSet one_and_two = (BitSet) bitset1.clone();
+        one_and_two.and(bitset2);
+        float _common_bit_count = one_and_two.cardinality();
+        double _tanimoto_coefficient = _common_bit_count / (_bitset1_cardinality + _bitset2_cardinality - _common_bit_count);
+        similarity = _tanimoto_coefficient;
         return similarity;
     }
 }

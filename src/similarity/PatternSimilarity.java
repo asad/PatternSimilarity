@@ -45,6 +45,7 @@ public class PatternSimilarity {
             System.out.println("Error: Missing input pattern files");
             System.out.println("Usage: java -jar PatternSimilarity.jar file1.fp file2.fp -TAB");
             System.out.println("Usage: java -jar PatternSimilarity.jar file1.fp file2.fp -CSV");
+            System.out.println("Usage: -B for binary mode");
             System.exit(1);
         }
 
@@ -61,30 +62,37 @@ public class PatternSimilarity {
             System.exit(1);
         }
 
-        if (args.length < 3) {
-            System.out.println("Error: Input pattern file type is not defined");
-            System.out.println("Usage: java -jar PatternSimilarity.jar file1.fp file2.fp -TAB");
-            System.out.println("Usage: java -jar PatternSimilarity.jar file1.fp file2.fp -CSV");
-            System.exit(1);
-        }
-
         IPatternFingerprinter q = null;
         IPatternFingerprinter t = null;
 
-        if (args[2].equalsIgnoreCase("-TAB")) {
-            q = ReaderTABFile.Read(fileQ);
-            t = ReaderTABFile.Read(fileT);
-        } else if (args[2].equalsIgnoreCase("-CSV")) {
-            q = ReaderCSVFile.Read(fileQ);
-            t = ReaderCSVFile.Read(fileT);
-        } else {
+
+        boolean weighted = true;
+        boolean fileRead = false;
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equalsIgnoreCase("-B")) {
+                weighted = false;
+            }
+            if (args[i].equalsIgnoreCase("-TAB")) {
+                q = ReaderTABFile.Read(fileQ);
+                t = ReaderTABFile.Read(fileT);
+                fileRead = true;
+            } else if (args[i].equalsIgnoreCase("-CSV")) {
+                q = ReaderCSVFile.Read(fileQ);
+                t = ReaderCSVFile.Read(fileT);
+                fileRead = true;
+            }
+        }
+
+        if (!fileRead) {
+
             System.out.println("Error: Input pattern file type not supported");
             System.out.println("Usage: java -jar PatternSimilarity.jar file1.fp file2.fp -TAB");
             System.out.println("Usage: java -jar PatternSimilarity.jar file1.fp file2.fp -CSV");
             System.exit(1);
+
         }
 
-        double score = Similarity.getSimilarity(q, t);
+        double score = Similarity.getSimilarity(q, t, weighted);
         DecimalFormat df = new DecimalFormat("0.00");
         df.setMaximumFractionDigits(2);
         String a = df.format(score);
