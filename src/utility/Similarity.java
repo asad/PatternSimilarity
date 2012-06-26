@@ -112,8 +112,8 @@ public class Similarity {
         BitSet one_and_two = (BitSet) bitset1.clone();
         one_and_two.and(bitset2);
         float _common_bit_count = one_and_two.cardinality();
-        double _tanimoto_coefficient = _common_bit_count / (_bitset1_cardinality + _bitset2_cardinality - _common_bit_count);
-        similarity = _tanimoto_coefficient;
+        double tanimotoCoefficient = _common_bit_count / (_bitset1_cardinality + _bitset2_cardinality - _common_bit_count);
+        similarity = tanimotoCoefficient;
         return similarity;
     }
 }
