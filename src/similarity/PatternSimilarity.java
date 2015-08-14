@@ -152,7 +152,7 @@ public class PatternSimilarity {
             }
         }
 
-        double score = Similarity.getSimilarity(q, t, weighted);;
+        double score = Similarity.getSimilarity(q, t, weighted);
 
         DecimalFormat df = new DecimalFormat("0.00");
         df.setMaximumFractionDigits(2);
