@@ -51,8 +51,8 @@ class IPatternComparators {
                             if (!o1.getFeature(pos).equals(o2.getFeature(pos))) {
                                 return o1.getFeature(pos).compareTo(o2.getFeature(pos));
                             } else if (!o1.getFeature(pos).equals(o2.getFeature(pos))) {
-                                double v1 = o1.getWeight(pos).doubleValue();
-                                double v2 = o2.getWeight(pos).doubleValue();
+                                double v1 = o1.getWeight(pos);
+                                double v2 = o2.getWeight(pos);
                                 if (v1 != v2) {
                                     return (int) (Math.max(v1, v2) - Math.min(v1, v2));
                                 }
@@ -82,8 +82,8 @@ class IPatternComparators {
                 if (len1 == len2) {
                     int pos = 0;
                     while (n-- != 0) {
-                        double v1 = o1.getWeight(pos).doubleValue();
-                        double v2 = o2.getWeight(pos).doubleValue();
+                        double v1 = o1.getWeight(pos);
+                        double v2 = o2.getWeight(pos);
                         if (v1 != v2) {
                             return (int) (Math.max(v1, v2) - Math.min(v1, v2));
                         }
