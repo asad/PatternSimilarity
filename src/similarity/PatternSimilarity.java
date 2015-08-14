@@ -43,6 +43,8 @@ import utility.Similarity;
  */
 public class PatternSimilarity {
 
+    final static boolean DEBUG = false;
+
     /**
      * @param args the command line arguments
      * @throws Exception
@@ -58,9 +60,12 @@ public class PatternSimilarity {
         File fileT = null;
         File fileP = null;
         String inputType = "TAB";
-        boolean weighted = false;
+        boolean weighted = true;
 
         if (command.contains("-q")) {
+            if (DEBUG) {
+                System.out.println("1");
+            }
             int indexOf = command.indexOf("-q") + 1;
             if (command.size() > indexOf) {
                 String file = command.get(indexOf);
@@ -68,6 +73,9 @@ public class PatternSimilarity {
             }
         }
         if (command.contains("-t")) {
+            if (DEBUG) {
+                System.out.println("2");
+            }
             int indexOf = command.indexOf("-t") + 1;
             if (command.size() > indexOf) {
                 String file = command.get(indexOf);
@@ -76,6 +84,9 @@ public class PatternSimilarity {
         }
 
         if (command.contains("-p")) {
+            if (DEBUG) {
+                System.out.println("3");
+            }
             int indexOf = command.indexOf("-p") + 1;
             if (command.size() > indexOf) {
                 String file = command.get(indexOf);
@@ -84,6 +95,9 @@ public class PatternSimilarity {
         }
 
         if (command.contains("-f")) {
+            if (DEBUG) {
+                System.out.println("4");
+            }
             int indexOf = command.indexOf("-f") + 1;
             if (command.size() > indexOf) {
                 inputType = command.get(indexOf);
@@ -91,7 +105,7 @@ public class PatternSimilarity {
         }
 
         if (command.contains("-B")) {
-            weighted = true;
+            weighted = false;
         }
 
         if (fileQ == null || !fileQ.isFile()) {
@@ -109,22 +123,33 @@ public class PatternSimilarity {
 
         boolean fileReadingSuccess = false;
 
-        if (inputType.equalsIgnoreCase("-TAB")) {
+        if (inputType.equalsIgnoreCase("TAB")) {
+            if (DEBUG) {
+                System.out.println("5");
+            }
             q = ReaderTABFile.Read(fileQ);
             t = ReaderTABFile.Read(fileT);
-            if (fileP != null && !fileP.isFile()) {
+            if (fileP != null && fileP.isFile()) {
                 p = ReaderTABFile.Read(fileP);
             }
             fileReadingSuccess = true;
-        } else if (inputType.equalsIgnoreCase("-CSV")) {
+        } else if (inputType.equalsIgnoreCase("CSV")) {
+            if (DEBUG) {
+                System.out.println("5");
+
+            }
             q = ReaderCSVFile.Read(fileQ);
             t = ReaderCSVFile.Read(fileT);
-            if (fileP != null && !fileP.isFile()) {
+            if (fileP != null && fileP.isFile()) {
                 p = ReaderCSVFile.Read(fileP);
             }
             fileReadingSuccess = true;
         }
 
+        if (DEBUG) {
+            System.out.println("6");
+
+        }
         if (!fileReadingSuccess) {
             help();
         }
@@ -152,6 +177,11 @@ public class PatternSimilarity {
             }
         }
 
+        if (DEBUG) {
+            System.out.println("query " + q);
+            System.out.println("target " + t);
+            System.out.println("Weighted " + weighted);
+        }
         double score = Similarity.getSimilarity(q, t, weighted);
 
         DecimalFormat df = new DecimalFormat("0.00");
